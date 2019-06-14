@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Animation wrenchDownAnimation;
 
+    [SerializeField]
+    private Transform unimog;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +28,7 @@ public class PlayerController : MonoBehaviour
         {
             OpenHand();
         }
-#else
+//#else
         if (OVRInput.GetDown (OVRInput.Button.PrimaryIndexTrigger)) {
             CloseHand();
         }
@@ -33,7 +36,17 @@ public class PlayerController : MonoBehaviour
         {
             OpenHand();
         }
+
+        if (OVRInput.GetDown(OVRInput.Button.DpadUp))
+        {
+
+        }
 #endif
+    }
+
+    private void MoveUnimog()
+    {
+        //unimog.position += 
     }
 
     private void CloseHand()
