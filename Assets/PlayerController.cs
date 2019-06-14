@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform unimog;
 
+    [SerializeField]
+    private float unimogSpeedMultiplier = 1f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +31,15 @@ public class PlayerController : MonoBehaviour
         {
             OpenHand();
         }
+
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            MoveUnimog(Vector3.forward);
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
+        {
+            MoveUnimog(Vector3.back);
+        }
 //#else
         if (OVRInput.GetDown (OVRInput.Button.PrimaryIndexTrigger)) {
             CloseHand();
@@ -37,16 +49,20 @@ public class PlayerController : MonoBehaviour
             OpenHand();
         }
 
-        if (OVRInput.GetDown(OVRInput.Button.DpadUp))
+        if (OVRInput.Get(OVRInput.Button.Up))
         {
-
+            MoveUnimog(Vector3.forward);
+        }
+        else if (OVRInput.Get(OVRInput.Button.Down))
+        {
+            MoveUnimog(Vector3.back);
         }
 #endif
     }
 
-    private void MoveUnimog()
+    private void MoveUnimog(Vector3 direction)
     {
-        //unimog.position += 
+        unimog.position += direction * unimogSpeedMultiplier * Time.deltaTime;
     }
 
     private void CloseHand()
