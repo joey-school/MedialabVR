@@ -18,12 +18,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Text directionText;
 
-    private bool isMovingForward = true;
+    [SerializeField]
+    private GameObject hand;
 
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private GameObject wrench;
+
+    public bool IsMovingForward { get; set; }
+
+    private bool handIsActive = true;
+
+    private void Awake()
     {
-        
+        IsMovingForward = true;
     }
 
     // Update is called once per frame
@@ -55,20 +62,9 @@ public class PlayerController : MonoBehaviour
             OpenHand();
         }
 
-        if (OVRInput.Get(OVRInput.Button.DpadUp))
-        {
-            isMovingForward = true;
-            directionText.text = "Moving forward";
-        }
-        else if (OVRInput.Get(OVRInput.Button.DpadDown))
-        {
-            isMovingForward = false;
-            directionText.text = "Moving backwards";
-        }
-
         if (OVRInput.Get(OVRInput.Button.PrimaryHandTrigger) || OVRInput.Get(OVRInput.Button.PrimaryTouchpad) || OVRInput.Get(OVRInput.Button.Down))
         {
-            if (isMovingForward)
+            if (IsMovingForward)
             {
                 MoveUnimog(Vector3.forward);
             }
@@ -87,11 +83,39 @@ public class PlayerController : MonoBehaviour
 
     private void CloseHand()
     {
-        wrenchDownAnimation.Play("close");
+        if (!handIsActive)
+        {
+            wrenchDownAnimation.Play("close");
+        }
+        else
+        {
+
+        }
     }
 
     private void OpenHand()
     {
-        wrenchDownAnimation.Play("open");
+        if (!handIsActive)
+        {
+            wrenchDownAnimation.Play("open");
+        }
+    }
+
+    public void SwapTools()
+    {
+        if (handIsActive)
+        {
+            wrench.SetActive(true);
+            hand.SetActive(false);
+
+            handIsActive = false;
+        }
+        else
+        {
+            hand.SetActive(true);
+            wrench.SetActive(false);
+
+            handIsActive = true;
+        }
     }
 }
