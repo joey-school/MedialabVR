@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,6 +14,11 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private float unimogSpeedMultiplier = 1f;
+
+    [SerializeField]
+    private Text directionText;
+
+    private bool isMovingForward = true;
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +46,7 @@ public class PlayerController : MonoBehaviour
         {
             MoveUnimog(Vector3.back);
         }
-//#else
+#else
         if (OVRInput.GetDown (OVRInput.Button.PrimaryIndexTrigger)) {
             CloseHand();
         }
@@ -49,13 +55,27 @@ public class PlayerController : MonoBehaviour
             OpenHand();
         }
 
-        if (OVRInput.Get(OVRInput.Button.Up))
+        if (OVRInput.Get(OVRInput.Button.DpadUp))
         {
-            MoveUnimog(Vector3.forward);
+            isMovingForward = true;
+            directionText.text = "Moving forward";
         }
-        else if (OVRInput.Get(OVRInput.Button.Down))
+        else if (OVRInput.Get(OVRInput.Button.DpadDown))
         {
-            MoveUnimog(Vector3.back);
+            isMovingForward = false;
+            directionText.text = "Moving backwards";
+        }
+
+        if (OVRInput.Get(OVRInput.Button.PrimaryHandTrigger) || OVRInput.Get(OVRInput.Button.PrimaryTouchpad) || OVRInput.Get(OVRInput.Button.Down))
+        {
+            if (isMovingForward)
+            {
+                MoveUnimog(Vector3.forward);
+            }
+            else
+            {
+                MoveUnimog(Vector3.back);
+            }
         }
 #endif
     }
